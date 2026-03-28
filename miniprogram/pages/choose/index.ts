@@ -1,42 +1,77 @@
-// index.ts
+import { uploadToAliOSS } from '../../utils/aliOssUpload';
 
 Component({
   data: {},
   methods: {
-    chooseFile() {
+    async chooseFile() {
+      const that = this;
       wx.chooseMessageFile({
         count: 10,
         type: 'file',
-        success(res) {
-          // tempFilePath可以作为img标签的src属性显示图片
-          const tempFilePaths = res.tempFiles
-          console.log('选择的文件：', tempFilePaths)
-          wx.showToast({
-            title: `已选择${tempFilePaths.length}个文件`,
-            icon: 'success'
-          })
+        async success(res) {
+          const tempFiles = res.tempFiles;
+          console.log('选择的文件：', tempFiles);
+          await that.uploadFiles(tempFiles);
         },
         fail(err) {
-          console.error('选择文件失败：', err)
+          console.error('选择文件失败：', err);
         }
-      })
+      });
     },
-    chooseImage() {
+    async chooseImage() {
+      const that = this;
       wx.chooseMessageFile({
         count: 10,
         type: 'image',
-        success(res) {
-          const tempFilePaths = res.tempFiles
-          console.log('选择的图片：', tempFilePaths)
-          wx.showToast({
-            title: `已选择${tempFilePaths.length}张图片`,
-            icon: 'success'
-          })
+        async success(res) {
+          const tempFiles = res.tempFiles;
+          console.log('选择的图片：', tempFiles);
+          await that.uploadFiles(tempFiles);
         },
         fail(err) {
-          console.error('选择图片失败：', err)
+          console.error('选择图片失败：', err);
         }
-      })
+      });
+    },
+    async uploadFiles(files: any[]) {
+      if (!files || files.length === 0) return;
+
+      wx.showLoading({
+        title: '正在上传...',
+        mask: true
+      });
+
+      let successCount = 0;
+      let failCount = 0;
+
+      const uploadPromises = files.map(file => {
+        return uploadToAliOSS(file.path, file.name)
+          .then(url => {
+            console.log(`文件 ${file.name} 上传成功，URL: ${url}`);
+            successCount++;
+          })
+          .catch(err => {
+            console.error(`文件 ${file.name} 上传失败:`, err);
+            failCount++;
+          });
+      });
+
+      await Promise.all(uploadPromises);
+
+      wx.hideLoading();
+
+      if (failCount === 0) {
+        wx.showToast({
+          title: `成功上传 ${successCount} 个文件`,
+          icon: 'success'
+        });
+      } else {
+        wx.showModal({
+          title: '上传结果',
+          content: `上传完成。成功: ${successCount}, 失败: ${failCount}`,
+          showCancel: false
+        });
+      }
     }
   },
-})
+});
