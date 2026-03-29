@@ -1,0 +1,47 @@
+<!--index.wxml-->
+<navigation-bar title="导入文件" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<view class="container">
+  <block wx:if="{{fileList.length === 0}}">
+    <view class="content">
+      <view class="transfer-section">
+        <image class="icon weixin-icon" src="../../images/weixin.png" mode="aspectFit"></image>
+        <image class="icon arrow-icon" src="../../images/transfer.png" mode="aspectFit"></image>
+        <image class="icon logo-icon" src="../../images/logo.png" mode="aspectFit"></image>
+      </view>
+
+      <view class="text-section">
+        <text class="title">导入微信中的文件</text>
+        <text class="subtitle">将微信聊天中的文件导入到扩脉</text>
+      </view>
+    </view>
+
+    <view class="button-section">
+      <button class="btn btn-file" bindtap="chooseFile">选择文件</button>
+      <button class="btn btn-image" bindtap="chooseImage">选择图片</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="preview-container">
+      <view class="preview-list">
+        <view class="preview-item" wx:for="{{fileList}}" wx:key="url" bindtap="previewFile" data-url="{{item.url}}">
+          <view class="file-icon-wrapper">
+            <image class="file-type-icon" src="{{item.icon}}" mode="aspectFit"></image>
+            <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view>
+          </view>
+          <text class="file-name">{{item.name}}</text>
+        </view>
+        
+        <!-- 继续添加按钮 -->
+        <view class="add-more-item" bindtap="chooseFile">
+          <view class="add-icon">+</view>
+          <text class="add-text">继续添加</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-section">
+      <button class="btn btn-confirm" bindtap="confirmUpload">确认</button>
+    </view>
+  </block>
+</view>

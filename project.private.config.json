@@ -23,8 +23,8 @@
       "list": [
         {
           "name": "pages/choose/index",
-          "pathName": "pages/choose/index",
-          "query": "",
+          "pathName": "pages/resume/upload",
+          "query": "token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJsb2dpblR5cGUiOiJsb2dpbiIsImxvZ2luSWQiOiI3MzA1NTExMTU5NDc2NjU0MDgwIiwicm5TdHIiOiJQV05IbWpaSnFaODlZWjM3M2psbnZwNDRCVWdRT0h6OCIsImVudGl0eVR5cGUiOjEsIm1vYmlsZSI6IjEzNTUyOTY3MTYyIiwidXNlck5hbWUiOiLlkaLlvpciLCJhdmF0YXIiOiJodHRwczovL2t1b21haS5vc3MtY24tYmVpamluZy5hbGl5dW5jcy5jb20vcHJvZC9hdmF0YXIvMjAyNS8wNS8xMC83MzA1NTExMTU5NDc2NjU0MDgwXzE3NDY4ODA2NTAwODUuanBnIiwiZmFjZVZlcmlmeVN0YXR1cyI6MCwidXBsb2FkQ29udGFjdFN0YXR1cyI6MSwibGFzdENvbnRhY3RBbGVydCI6MTc0ODQ5NDk0NCwibG92ZUNudCI6MCwiY29sbGVjdENudCI6MCwiaWQiOiI3MzA1NTExMTU5NDc2NjU0MDgwIiwiYXJhbmdvSWQiOiJ1c2VyLzczMDU1MTExNTk0NzY2NTQwODAiLCJjcmVhdGVUaW1lIjoxNzQzNDQyMjI2fQ.q2gOfhh9lc_f0FRWWSoRVTR7RnRnibA98YogWnB23H4",
           "scene": null,
           "launchMode": "default"
         }

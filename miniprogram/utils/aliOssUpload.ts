@@ -19,7 +19,7 @@ let ossToken: OssToken | null = null;
  * 从后端获取 OSS 临时上传凭证
  * @param cookie - 用于身份验证的 cookie 或 token
  */
-async function getToken(cookie: string = ''): Promise<OssToken> {
+async function getToken(cookie: string = '', fileName: string): Promise<OssToken> {
   // 简单的缓存策略，可以根据 expiration 字段判断是否过期
   if (ossToken && new Date(ossToken.expiration) > new Date()) {
     return ossToken;
@@ -31,17 +31,17 @@ async function getToken(cookie: string = ''): Promise<OssToken> {
       method: 'GET',
       data: {
         contentType: '9005',
-        ext: 'dasdsa',
+        ext: fileName || '建立',
         needTranVideo: '0'
       },
       header: {
         'Content-Type': 'application/json',
         // 根据你的项目实际情况传递身份凭证
-        'x-token': cookie,
+        'maitoken': cookie,
       },
       success(res: any) {
         if (res.statusCode === 200 && res.data.code === 0) {
-          const { item } = res.data.data;
+          const item = res.data.data;
           if (item?.accessKeyId && item.accessKeySecret && item.securityToken) {
             ossToken = {
               accessKeyId: item.accessKeyId,
@@ -94,13 +94,14 @@ export async function uploadToAliOSS(filePath: string, originalName: string): Pr
     const userToken = wx.getStorageSync('_userToken') || '';
 
     // 2. 获取 OSS 临时凭证
-    const token = await getToken(userToken);
+    const token = await getToken(userToken, originalName);
 
     // 3. 准备上传参数
     const objectKey = getObjectName(originalName);
     const host = OSS_CONFIG.host;
 
     return new Promise((resolve, reject) => {
+      console.log('$$$$$$$$$$', filePath)
       wx.uploadFile({
         url: host,
         filePath: filePath,

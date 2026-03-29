@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/choose/index",
+    "pages/resume/upload",
     "pages/logs/logs"
   ],
   "window": {

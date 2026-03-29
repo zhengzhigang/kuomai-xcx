@@ -2,6 +2,7 @@
 App<IAppOption>({
   globalData: {},
   onLaunch(options) {
+    console.log('============', options)
     // 捕获 App 打开时携带的 token 参数
     if (options && options.query && options.query.token) {
       const token = options.query.token;

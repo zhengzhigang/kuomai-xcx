@@ -12,5 +12,5 @@ export const BASE_URL = isDev ? 'https://www.kuomai360.com' : 'https://www.kuoma
 export const OSS_CONFIG = {
   bucket: 'san-file',
   region: 'oss-cn-beijing',
-  host: `https://san-file.oss-cn-beijing.aliyuncs.com`
+  host: `https://kuomai.oss-cn-beijing.aliyuncs.com`
 };
