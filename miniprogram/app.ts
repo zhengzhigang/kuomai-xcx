@@ -2,12 +2,10 @@
 App<IAppOption>({
   globalData: {},
   onLaunch(options) {
-    console.log('============', options)
     // 捕获 App 打开时携带的 token 参数
     if (options && options.query && options.query.token) {
       const token = options.query.token;
       wx.setStorageSync('_userToken', token);
-      console.log('App Launch 捕获到 token:', token);
     }
 
     // 展示本地存储能力

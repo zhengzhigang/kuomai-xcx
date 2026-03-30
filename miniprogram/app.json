@@ -1,10 +1,5 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/choose/index",
-    "pages/resume/upload",
-    "pages/logs/logs"
-  ],
+  "pages": ["pages/index/index", "pages/choose/index", "pages/resume/upload"],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
