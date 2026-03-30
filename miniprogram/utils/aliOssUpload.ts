@@ -1,5 +1,4 @@
 import { BASE_URL, OSS_CONFIG } from './config';
-const OSS = require('../libs/aliyun-oss-sdk.min.js');
 
 // 定义 OSS 配置和凭证的类型，匹配原有服务端 getToken 的返回结构
 interface OssToken {
@@ -98,35 +97,35 @@ export async function uploadToAliOSS(filePath: string, originalName: string): Pr
     // 2. 获取 OSS 临时凭证
     const token = await getToken(userToken, originalName);
 
-    const client = new OSS({
-      region: 'oss-cn-beijing',
-      accessKeyId: token.accessKeyId,
-      accessKeySecret: token.accessKeySecret,
-      stsToken: token.securityToken,
-      bucket: token.bucketName,
-      secure: true // 强制 HTTPS
-    })
+    // const client = new OSS({
+    //   region: 'oss-cn-beijing',
+    //   accessKeyId: token.accessKeyId,
+    //   accessKeySecret: token.accessKeySecret,
+    //   stsToken: token.securityToken,
+    //   bucket: token.bucketName,
+    //   secure: true // 强制 HTTPS
+    // })
 
-    let buffer
-    const fs = wx.getFileSystemManager();
-    try {
-      // 直接返回 ArrayBuffer
-      buffer = fs.readFileSync(filePath);
-      console.log('同步读取成功:', buffer);
-    } catch (err) {
-      console.error('同步读取失败:', err);
-    }
+    // let buffer
+    // const fs = wx.getFileSystemManager();
+    // try {
+    //   // 直接返回 ArrayBuffer
+    //   buffer = fs.readFileSync(filePath);
+    //   console.log('同步读取成功:', buffer);
+    // } catch (err) {
+    //   console.error('同步读取失败:', err);
+    // }
 
-    const streamLikeBuffer = {
-      stream: buffer, // 将 buffer 包装在 stream 属性下
-      type: 'application/octet-stream' // 强制指定类型
-    };
+    // const streamLikeBuffer = {
+    //   stream: buffer, // 将 buffer 包装在 stream 属性下
+    //   type: 'application/octet-stream' // 强制指定类型
+    // };
 
-    console.log('=====@@', buffer)
-    // 将文件上传到 OSS
-    const result = await client.put(token.key, streamLikeBuffer)
+    // console.log('=====@@', buffer)
+    // // 将文件上传到 OSS
+    // const result = await client.put(token.key, streamLikeBuffer)
 
-    return result
+    // return result
 
     // 3. 准备上传参数
     const objectKey = getObjectName(originalName);
@@ -139,25 +138,14 @@ export async function uploadToAliOSS(filePath: string, originalName: string): Pr
         filePath: filePath,
         name: 'file', // 必须与 OSS PostObject 请求中的 file 字段匹配
         formData: {
-          key: token.key,  //上传文件名称
-          policy: token.policy,   //表单域
-          'x-oss-signature-version': token.xOssSignatureVersion,    //指定签名的版本和算法
-          'x-oss-credential': token.xOssCredential,   //指明派生密钥的参数集
-          'x-oss-date': token.xOssDate,   //请求的时间
-          'x-oss-signature': token.xOssSignature,   //签名认证描述信息
-          'x-oss-security-token': token.securityToken,  //安全令牌
-          success_action_status: "200"  //上传成功后响应状态码
-
-          // key: token.key, // 文件名
-          // policy: 'YOUR_BASE64_POLICY', // 需要从后端获取
-          // OSSAccessKeyId: token.accessKeyId,
-          // signature: 'YOUR_SIGNATURE', // 需要从后端获取或在前端计算
-          // 'x-oss-security-token': token.securityToken,
-          // success_action_status: '200',
+          key: token.key,                          // 文件路径
+          OSSAccessKeyId: token.accessKeyId,       // STS临时AK
+          "x-oss-security-token": token.securityToken, // STS必须参数
+          success_action_status: "204"
         },
         success(res) {
           if (res.statusCode === 200) {
-            const fileUrl = `${host}/${objectKey}`;
+            const fileUrl = `${host}/${token.key}`;
             console.log(`文件上传成功: ${fileUrl}`);
             resolve(fileUrl);
           } else {
