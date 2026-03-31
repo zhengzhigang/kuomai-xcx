@@ -17,7 +17,7 @@
 
     <view class="button-section">
       <button class="btn btn-file" bindtap="chooseFile">选择文件</button>
-      <button class="btn btn-image" bindtap="chooseImage">选择图片</button>
+      <!-- <button class="btn btn-image" bindtap="chooseImage">选择图片</button> -->
     </view>
   </block>
 
@@ -35,7 +35,7 @@
         <!-- 继续添加按钮 -->
         <view class="add-more-item" bindtap="chooseFile">
           <view class="add-icon">+</view>
-          <text class="add-text">继续添加</text>
+          <text class="add-text">重新上传</text>
         </view>
       </view>
     </view>

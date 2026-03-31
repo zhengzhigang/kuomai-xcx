@@ -15,8 +15,9 @@ Component({
     async chooseFile() {
       const that = this;
       wx.chooseMessageFile({
-        count: 10,
+        count: 1,
         type: 'file',
+        extension: ['.pdf', 'pdf', '.doc', 'doc', '.docx', 'docx'],
         async success(res) {
           const tempFiles = res.tempFiles;
           console.log('选择的文件：', tempFiles);

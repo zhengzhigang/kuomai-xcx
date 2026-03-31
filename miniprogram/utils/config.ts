@@ -15,5 +15,5 @@ export const UPLOAD_PATH = '/api/upload'; // 根据实际情况修改，例如 /
 export const OSS_CONFIG = {
   bucket: 'kuomai',
   region: 'oss-cn-beijing',
-  host: `https://kuomai.oss-cn-beijing.aliyuncs.com/`
+  host: `https://kuomai.oss-cn-beijing.aliyuncs.com`
 };
