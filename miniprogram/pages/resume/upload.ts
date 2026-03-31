@@ -1,4 +1,5 @@
 import { uploadToAliOSS } from '../../utils/aliOssUpload';
+import { BASE_URL } from '../../utils/config';
 
 interface FileItem {
   name: string;
@@ -10,6 +11,7 @@ interface FileItem {
 Component({
   data: {
     fileList: [] as FileItem[],
+    success: false
   },
   methods: {
     async chooseFile() {
@@ -118,19 +120,42 @@ Component({
       }
     },
     confirmUpload() {
-      // 处理确认逻辑，比如返回上一页并传递数据
-      const pages = getCurrentPages();
-      const prevPage = pages[pages.length - 2];
-      if (prevPage) {
-        // 假设上一页有处理文件的函数
-        // prevPage.handleImportedFiles(this.data.fileList);
-        wx.navigateBack({
-          delta: 1,
-          success: () => {
-            wx.showToast({ title: '导入成功', icon: 'success' });
+      const resumeFile = this.data.fileList[0].url
+      const resumeName = this.data.fileList[0].name
+      const userToken = wx.getStorageSync('_userToken') || '';
+      wx.showLoading({
+        title: '上传中...'
+      })
+      wx.request({
+        url: `${BASE_URL}/api/resume/createResume`,
+        method: 'POST',
+        data: {
+          resumeName,
+          resumeFile
+        },
+        header: {
+          'Content-Type': 'application/json',
+          // 根据你的项目实际情况传递身份凭证
+          'maitoken': userToken, // 鉴权字段，根据实际情况调整
+        },
+        success: (res: any) => {
+          if (res.data.code === 0) {
+            this.setData({
+              success: true
+            })
+            wx.showToast({
+              title: '上传成功',
+              icon: 'success',
+              duration: 2000 // 2000毫秒 = 2秒，之后会自动关闭
+            })
           }
-        });
-      }
+          wx.hideLoading()
+        },
+        fail(err) {
+          wx.hideLoading()
+          console.log('err', err)
+        },
+      });
     }
   },
 });

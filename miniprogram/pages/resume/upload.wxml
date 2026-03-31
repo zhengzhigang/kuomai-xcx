@@ -27,21 +27,18 @@
         <view class="preview-item" wx:for="{{fileList}}" wx:key="url" bindtap="previewFile" data-url="{{item.url}}">
           <view class="file-icon-wrapper">
             <image class="file-type-icon" src="{{item.icon}}" mode="aspectFit"></image>
-            <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view>
+            <!-- <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view> -->
           </view>
           <text class="file-name">{{item.name}}</text>
-        </view>
-        
-        <!-- 继续添加按钮 -->
-        <view class="add-more-item" bindtap="chooseFile">
-          <view class="add-icon">+</view>
-          <text class="add-text">重新上传</text>
         </view>
       </view>
     </view>
 
     <view class="footer-section">
-      <button class="btn btn-confirm" bindtap="confirmUpload">确认</button>
+      <button wx:if="{{!success}}" class="btn btn-confirm" bindtap="confirmUpload">确认并上传</button>
+      <button wx:else class="btn btn-confirm" open-type="launchApp" app-parameter="user_id=123" binderror="launchAppError">
+        返回扩脉App
+      </button>
     </view>
   </block>
 </view>
