@@ -27,9 +27,10 @@
         <view class="preview-item" wx:for="{{fileList}}" wx:key="url" bindtap="previewFile" data-url="{{item.url}}">
           <view class="file-icon-wrapper">
             <image class="file-type-icon" src="{{item.icon}}" mode="aspectFit"></image>
-            <!-- <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view> -->
+            <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view>
           </view>
           <text class="file-name">{{item.name}}</text>
+          <text class="preview-tip">点击预览</text>
         </view>
       </view>
     </view>

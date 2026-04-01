@@ -19,7 +19,7 @@ Component({
       wx.chooseMessageFile({
         count: 1,
         type: 'file',
-        extension: ['.pdf', 'pdf', '.doc', 'doc', '.docx', 'docx'],
+        extension: ['pdf', 'doc', 'docx'],
         async success(res) {
           const tempFiles = res.tempFiles;
           console.log('选择的文件：', tempFiles);
@@ -92,28 +92,38 @@ Component({
     },
     previewFile(e: any) {
       const url = e.currentTarget.dataset.url;
+      const ext = url.split('.').pop()?.toLowerCase();
+
+      if (['jpg', 'jpeg', 'png'].includes(ext)) {
+        wx.previewImage({
+          current: url,
+          urls: [url]
+        });
+        return;
+      }
+
       wx.showLoading({ title: '正在打开文档...' });
 
-      // 只有 pdf, word, excel, ppt 等支持预览
-      const ext = url.split('.').pop()?.toLowerCase();
       if (['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) {
         wx.downloadFile({
           url: url,
           success: (res) => {
             wx.openDocument({
               filePath: res.tempFilePath,
+              fileType: ext as any,
               success: () => console.log('打开文档成功'),
-              fail: (err) => wx.showToast({ title: '暂不支持预览此格式', icon: 'none' })
+              fail: (err) => {
+                console.error('打开文档失败：', err);
+                wx.showToast({ title: '打开文档失败', icon: 'none' });
+              }
             });
+          },
+          fail: (err) => {
+            console.error('下载文件失败：', err);
+            wx.showToast({ title: '下载文件失败', icon: 'none' });
           },
           complete: () => wx.hideLoading()
         });
-      } else if (['jpg', 'jpeg', 'png'].includes(ext)) {
-        wx.previewImage({
-          current: url,
-          urls: [url]
-        });
-        wx.hideLoading();
       } else {
         wx.hideLoading();
         wx.showToast({ title: '该格式不支持预览', icon: 'none' });
@@ -139,6 +149,7 @@ Component({
           'maitoken': userToken, // 鉴权字段，根据实际情况调整
         },
         success: (res: any) => {
+          wx.hideLoading()
           if (res.data.code === 0) {
             this.setData({
               success: true
@@ -149,7 +160,6 @@ Component({
               duration: 2000 // 2000毫秒 = 2秒，之后会自动关闭
             })
           }
-          wx.hideLoading()
         },
         fail(err) {
           wx.hideLoading()

@@ -121,11 +121,17 @@ page {
   align-items: center;
   justify-content: center;
   margin-bottom: 12rpx;
+  overflow: hidden;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
 }
 
 .file-type-icon {
-  width: 80rpx;
-  height: 80rpx;
+  width: 100rpx;
+  height: 100rpx;
 }
 
 .delete-icon {
@@ -152,6 +158,12 @@ page {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.preview-tip {
+  font-size: 26rpx;
+  color: #ff4d4f;
+  margin-top: 4rpx;
 }
 
 .add-icon {
