@@ -27,7 +27,7 @@
         <view class="preview-item" wx:for="{{fileList}}" wx:key="url" data-url="{{item.url}}">
           <view class="file-icon-wrapper">
             <image class="file-type-icon" src="{{item.icon}}" mode="aspectFit"></image>
-            <!-- <view class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view> -->
+            <view wx:if="{{!success}}" class="delete-icon" catchtap="deleteFile" data-index="{{index}}">×</view>
           </view>
           <text class="file-name">{{item.name}}</text>
           <text wx:if="{{success}}" class="preview-tip">上传成功</text>
