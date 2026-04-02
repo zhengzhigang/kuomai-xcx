@@ -144,7 +144,7 @@ Component({
           resumeFile
         },
         header: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
           // 根据你的项目实际情况传递身份凭证
           'maitoken': userToken, // 鉴权字段，根据实际情况调整
         },
